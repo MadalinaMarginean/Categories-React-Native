@@ -3,7 +3,6 @@ import { StyleSheet, Text, View} from 'react-native';
 
 import Accordion from 'react-native-collapsible/Accordion';
 
-
 export default class AccordionView extends Component {
   constructor(props) {
     super(props);
@@ -19,15 +18,14 @@ export default class AccordionView extends Component {
 
   _renderContent(section){
     return (
-    <View style={styles.content}>
-      <AccordionView categories={section.subset}/>
-    </View>
+      <View style={styles.content}>
+        <AccordionView categories={section.subset}/>
+      </View>
     );
   }
 
   render() {
     const { categories } = this.props;
-
     return (
       <Accordion
         sections={categories}
