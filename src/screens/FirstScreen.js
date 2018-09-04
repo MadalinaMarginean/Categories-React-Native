@@ -8,7 +8,6 @@ import { Navigation } from "react-native-navigation";
 export default class FirstScreen extends Component {
   constructor() {
     super();
-    console.log("constructor");
     this.state = {
       data: [],
       headerToken: ''
@@ -80,9 +79,6 @@ export default class FirstScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // backgroundColor: '#F5FCFF',
   },
   button: {
     height: 16,

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import Label from '../utils/Label';
-import {Navigation} from "react-native-navigation";
+import { Navigation } from "react-native-navigation";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const STORAGE_KEY = 'id_token';
@@ -44,110 +44,83 @@ export default class LoginScreen extends Component {
   _userLogin = () => {
     const value = this.state;
     if (value) { // if validation fails, value will be null
-      fetch("http://192.168.88.113:3001/sessions/create", {
+      fetch("http://192.168.88.113:8080/v1/login", {
         method: "POST",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          username: value.username,
+          email: value.username,
           password: value.password,
         })
       })
-        .then((response) => response.json())
-        .then((responseData) => {
-          Alert.alert(
-            "Login Success!",
-            // [
-            //   {text: 'OK', onPress: () => console.log('OK Pressed')},
-            // ],
-            // { cancelable: false }
-          ),
-            this._onValueChange(STORAGE_KEY, responseData.id_token);
-          Promise.all([
-            Icon.getImageSource('md-list', 30),
-            Icon.getImageSource('md-apps', 30),
-            Icon.getImageSource('md-contact', 30),
-          ]).then(source => {
-            Navigation.startTabBasedApp({
-              tabs: [
-                // {
-                //   label: 'Login',
-                //   screen: 'TestProj.LoginScreen',
-                //   icon: source[2],
-                //   title: 'Login',
-                // },
-                {
-                  label: 'Accordion',
-                  screen: 'TestProj.FirstScreen', // this is a registered name for a screen
-                  icon: source[0],
-                  title: 'Accordion',
-                },
-                {
-                  label: 'Push',
-                  screen: 'TestProj.SecondScreen',
-                  icon: source[1],
-                  title: 'Push'
-                },
-              ]
-            });
-          })
+      .then((response) => response.json())
+      .then((responseData) => {
+        Alert.alert(
+          "Login Success!",
+        ),
+        this._onValueChange(STORAGE_KEY, responseData.token);
+
+        Promise.all([
+          Icon.getImageSource('md-list', 30),
+          Icon.getImageSource('md-apps', 30),
+          Icon.getImageSource('md-contact', 30),
+        ]).then(source => {
+          Navigation.startTabBasedApp({
+            tabs: [
+              {
+                label: 'Accordion',
+                screen: 'TestProj.FirstScreen', // this is a registered name for a screen
+                icon: source[0],
+                title: 'Accordion',
+              },
+              {
+                label: 'Push',
+                screen: 'TestProj.SecondScreen',
+                icon: source[1],
+                title: 'Push'
+              },
+            ]
+          });
         })
-        // .catch((error) => console.log("error", error))
-        .done();
+      })
+      .catch(() =>
+        Alert.alert(
+          "Wrong email or password!"
+        ))
+      .done();
     }
   }
 
   _userSignup = () => {
     const value = this.state;
     if (value) { // if validation fails, value will be null
-      fetch("http://localhost:3001/users", {
+      fetch("http://192.168.88.113:8080/v1/register", {
         method: "POST",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          username: value.username,
+          email: value.username,
           password: value.password,
         })
       })
-        .then((response) => response.json())
-        .then((responseData) => {
-          this._onValueChange(STORAGE_KEY, responseData.id_token),
-            Alert.alert(
-              "Signup Success!"
-            )
-        })
-        .done();
-    }
-  }
-
-  async _userLogout() {
-    try {
-      await AsyncStorage.removeItem(STORAGE_KEY);
-      Promise.all([
-        Icon.getImageSource('md-list', 30),
-        Icon.getImageSource('md-apps', 30),
-        Icon.getImageSource('md-contact', 30),
-      ]).then(source => {
-        Navigation.startTabBasedApp({
-          tabs: [
-            {
-              label: 'Login',
-              screen: 'TestProj.LoginScreen',
-              icon: source[2],
-              title: 'Login',
-            },
-          ]
-        });
+      .then((response) => response.json())
+      .then((responseData) => {
+        this._onValueChange(STORAGE_KEY, responseData.token),
+          Alert.alert(
+            "Signup Success!"
+          )
       })
-    } catch (error) {
-      console.log('AsyncStorage error: ' + error.message);
+      .catch(() =>
+        Alert.alert(
+          "Can't signup!"
+        ))
+      .done();
     }
   }
-
 
   render() {
     return (
@@ -156,7 +129,7 @@ export default class LoginScreen extends Component {
           <Text style={styles.title}>Signup/Login</Text>
         </View>
         <View>
-          <Label text="Username or Email" />
+          <Label text="Email" />
           <TextInput
             style={styles.textInput}
             value={this.state.username}

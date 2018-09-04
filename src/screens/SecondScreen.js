@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, AsyncStorage, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage, TouchableHighlight } from 'react-native';
 import NavigationList from '../NavigationList';
 import Icon from "react-native-vector-icons/Ionicons";
 import { Navigation } from "react-native-navigation";
@@ -44,7 +44,6 @@ export default class SecondScreen extends Component {
   }
 
   render() {
-    console.log("navigator second", this.props.navigator);
     return (
       <View style={styles.container}>
         <TouchableHighlight style={styles.button} onPress={this._userLogout} underlayColor='#99d9f4'>

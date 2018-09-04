@@ -15,16 +15,9 @@ Promise.all([
   try {
     AsyncStorage.getItem('id_token')
       .then((value) => {
-        console.log("id_tokennnnnn", value);
         if (value) {
           Navigation.startTabBasedApp({
             tabs: [
-              // {
-              //   label: 'Login',
-              //   screen: 'TestProj.LoginScreen',
-              //   icon: source[2],
-              //   title: 'Login',
-              // },
               {
                 label: 'Accordion',
                 screen: 'TestProj.FirstScreen', // this is a registered name for a screen
